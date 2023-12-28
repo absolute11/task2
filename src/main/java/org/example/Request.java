@@ -1,5 +1,4 @@
 package org.example;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
@@ -11,11 +10,13 @@ public class Request {
     private final String uri;
     private final String path;
     private final String method;
+    private final List<NameValuePair> queryParams; // Добавлено поле для хранения параметров запроса
 
     public Request(String uri, String path, String method) {
         this.uri = uri;
         this.path = path;
         this.method = method;
+        this.queryParams = parseQueryParams(uri); // Вызов метода для парсинга параметров запроса
     }
 
     public String getUri() {
@@ -31,8 +32,7 @@ public class Request {
     }
 
     public String getQueryParam(String name) {
-        List<NameValuePair> params = URLEncodedUtils.parse(URI.create(this.uri), StandardCharsets.UTF_8);
-        for (NameValuePair param : params) {
+        for (NameValuePair param : queryParams) {
             if (param.getName().equals(name)) {
                 return param.getValue();
             }
@@ -41,6 +41,10 @@ public class Request {
     }
 
     public List<NameValuePair> getQueryParams() {
-        return URLEncodedUtils.parse(URI.create(this.uri), StandardCharsets.UTF_8);
+        return queryParams;
+    }
+
+    private List<NameValuePair> parseQueryParams(String uri) {
+        return URLEncodedUtils.parse(URI.create(uri), StandardCharsets.UTF_8);
     }
 }

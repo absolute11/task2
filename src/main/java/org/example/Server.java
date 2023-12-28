@@ -50,7 +50,7 @@ public class Server {
             }
 
             final var pathAndQuery = parts[1];
-            final var path = pathAndQuery.split("\\?")[0]; // Extract path without query
+            final var path = pathAndQuery.split("\\?")[0];
             final var request = new Request(pathAndQuery, path, parts[2]);
 
             if (!validPaths.contains(path)) {
